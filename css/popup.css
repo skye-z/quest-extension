@@ -3,7 +3,7 @@ body{
 }
 
 #popup {
-    height: 280px;
+    height: 330px;
     width: 300px;
 }
 
@@ -64,5 +64,10 @@ body{
     text-align: center;
     cursor: pointer;
     min-width: 59px;
+    color: #333;
+}
+
+#subject{
+    background-color: #e3e3e3;
     color: #333;
 }

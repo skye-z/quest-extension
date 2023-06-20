@@ -27,7 +27,7 @@ $(function () {
     })
     $('#app-state').on('click', function () {
         if (cache.system == null) alert('无法连接到服务器(' + cache.host + '), 请检查您的网络及服务器运行情况')
-        else alert('已连接到'+cache.system.name+'('+cache.host+'), 服务端当前为'+cache.system.version+'版本')
+        else alert('已连接到' + cache.system.name + '(' + cache.host + '), 服务端当前为' + cache.system.version + '版本')
     })
 });
 
@@ -75,6 +75,41 @@ function initListener() {
                 localStorage.setItem('app:path', msg.path)
                 initUser()
                 break
+            case 'inject:init':
+                sendMessage({
+                    action: 'inject:init',
+                    host: cache.host,
+                    token: cache.token
+                })
+                break
+            case 'inject:push':
+                console.log(msg)
+                let sid = parseInt($('#subject').val());
+                $.ajax({
+                    method: 'POST',
+                    url: cache.host + '/api/question/add',
+                    contentType: 'application/json',
+                    headers: {
+                        Authorization: 'Bearer ' + cache.token
+                    },
+                    data: JSON.stringify({
+                        sid,
+                        level: msg.level,
+                        type: msg.type,
+                        question: msg.question,
+                        options: msg.options,
+                        answer: msg.answer
+                    }),
+                    success: res => {
+                        console.log(res)
+                        return Promise.resolve(res)
+                    },
+                    error: err => {
+                        console.log(err)
+                        return Promise.reject(err)
+                    }
+                });
+                break
         }
     })
 }
@@ -87,6 +122,8 @@ function initInfo() {
             cache.system = res
             $('#server-state').removeClass('err')
             $('#server-state-txt').html('在线')
+            // 加载科目
+            initSubject()
         },
         error: err => {
             $('#server-state').addClass('err')
@@ -111,6 +148,27 @@ function initUser() {
         cache.token = token;
         loadSupportList()
     }
+}
+
+// 加载科目信息
+function initSubject() {
+    $.ajax({
+        url: cache.host + '/api/subject/list',
+        headers: {
+            Authorization: 'Bearer ' + cache.token
+        },
+        success: res => {
+            $('#subject').html('')
+            for (let i in res.list) {
+                let item = res.list[i]
+                $('#subject').append('<option value="' + item.id + '">' + item.name + '</option>')
+            }
+        },
+        error: err => {
+            $('#server-state').addClass('err')
+            $('#server-state-txt').html('离线')
+        }
+    });
 }
 
 // 加载案例列表

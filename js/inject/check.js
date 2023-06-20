@@ -8,8 +8,5 @@ function run() {
             chrome.runtime.sendMessage({ action: 'auth:check', data: info })
         }
     }
-    chrome.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
-        console.log('page receive', message)
-    })
 }
 run()

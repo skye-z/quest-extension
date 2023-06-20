@@ -19,7 +19,13 @@ function run() {
         getQuestions(questions, groups[i])
     }
     console.log('[Export] 已解析' + questions.length + '道试题,开始推送')
-    setTimeout(() => push(), 500)
+    for (let i in questions) {
+        if (questions[i].type != 1 && questions[i].type != 3 && questions[i].type != 8)
+            questions[i].answer = JSON.stringify(questions[i].answer)
+        else questions[i].answer = '' + questions[i].answer
+        questions[i].options = JSON.stringify(questions[i].options)
+    }
+    setTimeout(() => push(questions, 0), 500)
 }
 
 // 获取试题分组
@@ -133,9 +139,19 @@ function analysisAnswer(item, type, options) {
     }
 }
 
-function push() {
-    updateMask('正在推送试题')
-
-    setTimeout(() => updateMask('试题导入完成'), 500)
-    setTimeout(() => closeMask(), 1000)
+// 推送题目
+function push(list, index) {
+    if (index == list.length) {
+        setTimeout(() => updateMask('试题导入完成'), 500)
+        setTimeout(() => closeMask(), 1000)
+        return false;
+    }
+    chrome.runtime.sendMessage({ action: 'inject:push', ...list[index] }).then(res => {
+        console.log(res)
+        updateMask('已推送 ' + (index + 1) + ' 题')
+        push(list, index + 1)
+    }).catch(err => {
+        console.log(err)
+        push(list, index + 1)
+    })
 }
