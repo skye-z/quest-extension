@@ -4,6 +4,7 @@ let cache = {
     user: {},
     host: '',
     token: '',
+    subject: null,
     system: null
 }
 
@@ -83,8 +84,6 @@ function initListener() {
                 })
                 break
             case 'inject:push':
-                console.log(msg)
-                let sid = parseInt($('#subject').val());
                 $.ajax({
                     method: 'POST',
                     url: cache.host + '/api/question/add',
@@ -93,7 +92,7 @@ function initListener() {
                         Authorization: 'Bearer ' + cache.token
                     },
                     data: JSON.stringify({
-                        sid,
+                        sid: cache.subject,
                         level: msg.level,
                         type: msg.type,
                         question: msg.question,
@@ -156,11 +155,17 @@ function initSubject() {
             Authorization: 'Bearer ' + cache.token
         },
         success: res => {
+            let select = localStorage.getItem('app:subject:select')
+            if (select == undefined) select = ''
             $('#subject').html('')
             for (let i in res.list) {
                 let item = res.list[i]
-                $('#subject').append('<option value="' + item.id + '">' + item.name + '</option>')
+                $('#subject').append('<option value="' + item.id + '"' + (select == item.id ? 'selected="selected"' : '') + '>' + item.name + '</option>')
             }
+            $("select").change(function () {
+                cache.subject = $("select").val();
+                localStorage.setItem('app:subject:select', cache.subject)
+            })
         },
         error: err => {
             $('#server-state').addClass('err')
