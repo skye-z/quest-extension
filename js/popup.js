@@ -181,7 +181,7 @@ function loadSupportList() {
     for (let i in support) {
         $('#site-list').append('<div class="site-item flex align-center border-bottom"><a href="http://' + support[i].path + '" target="_blank" class="item-info border-left border-right pl-10 pt-5 pb-5"><div>' + support[i].name + '</div><div class="text-small text-gray line-1">' + support[i].path + '</div></a><div support-id="' + i + '" class="support-run item-tool text-small text-center">执行</div></div>')
     }
-    $('#site-list').append('<div class="text-gray text-small text-center mt-5">请求支持请在 Github 上提 Issues</div>')
+    $('#site-list').append('<div class="text-gray text-small text-center mt-5">请求支持请在 <a class="text-gray" href="https://github.com/skye-z/quest-extension" target="_blank">Github</a> 上提 <a class="text-gray" href="https://github.com/skye-z/quest-extension/issues/new" target="_blank">Issues</a></div>')
     $('.support-run').on('click', function () {
         console.log('[Script] 导出脚本注入 -> ' + cache.page.id)
         let index = $(this).attr('support-id')
