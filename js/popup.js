@@ -101,11 +101,9 @@ function initListener() {
                         answer: msg.answer
                     }),
                     success: res => {
-                        console.log(res)
                         return Promise.resolve(res)
                     },
                     error: err => {
-                        console.log(err)
                         return Promise.reject(err)
                     }
                 });

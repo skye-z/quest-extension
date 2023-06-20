@@ -147,11 +147,9 @@ function push(list, index) {
         return false;
     }
     chrome.runtime.sendMessage({ action: 'inject:push', ...list[index] }).then(res => {
-        console.log(res)
         updateMask('已推送 ' + (index + 1) + ' 题')
         push(list, index + 1)
     }).catch(err => {
-        console.log(err)
         push(list, index + 1)
     })
 }
