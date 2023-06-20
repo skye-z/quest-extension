@@ -41,39 +41,3 @@ function updateMask(text) {
 function closeMask() {
     document.getElementById('qexec-mask').remove()
 }
-
-// 推送题目至服务端
-// function push2Server(item) {
-//     return new Promise(function (resolve, reject) {
-//         $.ajax({
-//             method: 'POST',
-//             url: config.host + '/question/add',
-//             headers: {
-//                 Authorization: 'Bearer ' + config.token
-//             },
-//             data: {
-//                 sid: config.subject,
-//                 level: item.level,
-//                 type: item.type,
-//                 question: item.question,
-//                 options: item.options,
-//                 answer: item.answer
-//             },
-//             success: res => {
-//                 resolve(res)
-//             },
-//             error: err => {
-//                 reject(err)
-//             }
-//         });
-//     });
-// }
-
-// let config = {}
-// chrome.runtime.onMessage.addListener((message, _sender, _sendResponse) => {
-//     if (message.action == "inject:init") {
-//         config.host = message.host
-//         config.token = message.token
-//         config.subject = message.subject
-//     }
-// })

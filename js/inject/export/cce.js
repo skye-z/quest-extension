@@ -148,8 +148,8 @@ function push(list, index) {
     }
     chrome.runtime.sendMessage({ action: 'inject:push', ...list[index] }).then(res => {
         updateMask('已推送 ' + (index + 1) + ' 题')
-        push(list, index + 1)
-    }).catch(err => {
-        push(list, index + 1)
+        setTimeout(()=>push(list, index + 1),300)
+    }).catch(() => {
+        setTimeout(()=>push(list, index + 1),300)
     })
 }
