@@ -156,14 +156,15 @@ function initSubject() {
         },
         success: res => {
             let select = localStorage.getItem('app:subject:select')
-            if (select == undefined) select = ''
+            if (select == undefined && res.list.length > 0) select = res.list[0].id
+            else if (select) cache.subject = parseInt(select);
             $('#subject').html('')
             for (let i in res.list) {
                 let item = res.list[i]
                 $('#subject').append('<option value="' + item.id + '"' + (select == item.id ? 'selected="selected"' : '') + '>' + item.name + '</option>')
             }
-            $("select").change(function () {
-                cache.subject = $("select").val();
+            $("#subject").change(function () {
+                cache.subject = parseInt($("#subject").val());
                 localStorage.setItem('app:subject:select', cache.subject)
             })
         },
