@@ -157,7 +157,8 @@ function initSubject() {
         success: res => {
             let select = localStorage.getItem('app:subject:select')
             if (select == undefined && res.list.length > 0) select = res.list[0].id
-            else if (select) cache.subject = parseInt(select);
+            if (select) cache.subject = parseInt(select);
+            console.log('[Script] 初始化科目',cache.subject)
             $('#subject').html('')
             for (let i in res.list) {
                 let item = res.list[i]
